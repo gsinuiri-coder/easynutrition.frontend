@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {Diet} from '../models/diet';
+import {Customer} from '../models/customer';
 import {catchError, retry} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpDataDietService {
-// Diets Endpoint
-//   basePath = 'https://easynutrition20202.herokuapp.com/api/nutricionists/1/diets';
-  basePath = 'http://localhost:8080/api/nutricionists/1/diets';
-
+export class HttpDataCustomerService {
+// Customers Endpoint
+  basePath = 'http://localhost:8080/api/customers';
   constructor(private http: HttpClient) { }
   // Http Default Options
   httpOptions = {
@@ -30,29 +28,29 @@ export class HttpDataDietService {
     return throwError('Something happened with request, please try again later.');
   }
 
-  // Create Diet
-  createItem(item): Observable<Diet> {
-    return this.http.post<Diet>(this.basePath, JSON.stringify(item), this.httpOptions)
+  // Create Customer
+  createItem(item): Observable<Customer> {
+    return this.http.post<Customer>(this.basePath, JSON.stringify(item), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Get Diet by Id
-  getItem(id): Observable<Diet> {
-    return this.http.get<Diet>(`${this.basePath}/${id}`, this.httpOptions )
+  // Get Customer by Id
+  getItem(id): Observable<Customer> {
+    return this.http.get<Customer>(`${this.basePath}/${id}`, this.httpOptions )
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Get Diet Data
-  getList(): Observable<Diet>{
-    return this.http.get<Diet>(this.basePath)
+  // Get Customer Data
+  getList(): Observable<Customer>{
+    return this.http.get<Customer>(this.basePath)
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Update Diet
-  updateItem(id, item): Observable<Diet>{
-    return this.http.put<Diet>(`${this.basePath}/${id}`, JSON.stringify(item), this.httpOptions)
+  // Update Customer
+  updateItem(id, item): Observable<Customer>{
+    return this.http.put<Customer>(`${this.basePath}/${id}`, JSON.stringify(item), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Delete Diet
+  // Delete Customer
   deleteItem(id): Observable<any> {
-    return this.http.delete<Diet>(`${this.basePath}/${id}`, this.httpOptions)
+    return this.http.delete<Customer>(`${this.basePath}/${id}`, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 }

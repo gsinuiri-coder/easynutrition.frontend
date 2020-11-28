@@ -1,37 +1,38 @@
 import { AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Progress } from '../../models/progress';
+import { Nutricionist } from '../../models/nutricionist';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { HttpDataProgressService } from '../../services/http-data-progress.service';
+import { HttpDataNutricionistService } from '../../services/http-data-nutricionist.service';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 
+
 @Component({
-  selector: 'app-progress',
-  templateUrl: './progress.component.html',
-  styleUrls: ['./progress.component.css']
+  selector: 'app-nutricionists',
+  templateUrl: './nutricionists.component.html',
+  styleUrls: ['./nutricionists.component.css']
 })
-export class ProgressComponent implements OnInit, AfterViewInit {
-  @ViewChild('progressForm', { static: false })
-  progressForm: NgForm;
-  progressData: Progress;
+export class NutricionistsComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('nutricionistForm', { static: false })
+  nutricionistForm: NgForm;
+  nutricionistData: Nutricionist;
   dataSource = new MatTableDataSource();
-  displayedColumns: string[] = ['id', 'weight', 'description'];
+  displayedColumns: string[] = ['id', 'userName', 'password', 'name', 'lastName', 'university', 'actions'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   isEditMode = false;
 
-  constructor(private httpDataService: HttpDataProgressService, private router: Router) {
-    this.progressData = {} as Progress;
+  constructor(private httpDataService: HttpDataNutricionistService, private router: Router) {
+    this.nutricionistData = {} as Nutricionist;
   }
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
-    this.getAllProgress();
+    this.getAllNutricionists();
   }
-
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
@@ -43,7 +44,7 @@ export class ProgressComponent implements OnInit, AfterViewInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  getAllProgress(): void {
+  getAllNutricionists(): void {
     this.httpDataService.getList().subscribe((response: any) => {
       this.dataSource.data = response;
       console.log(this.dataSource.data);
@@ -51,32 +52,35 @@ export class ProgressComponent implements OnInit, AfterViewInit {
   }
   editItem(element): void {
     console.log(element);
-    this.progressData = _.cloneDeep(element);
+    this.nutricionistData = _.cloneDeep(element);
     this.isEditMode = true;
   }
   cancelEdit(): void {
     this.isEditMode = false;
-    this.progressForm.resetForm();
+    this.nutricionistForm.resetForm();
   }
   deleteItem(id): void {
     this.httpDataService.deleteItem(id).subscribe(() => {
-      this.dataSource.data = this.dataSource.data.filter((o: Progress) => {
+      this.dataSource.data = this.dataSource.data.filter((o: Nutricionist) => {
         return o.id !== id ? o : false;
       });
     });
     console.log(this.dataSource.data);
   }
-  addProgress(): void {
-    const newProgress = {weight: this.progressData.weight, description: this.progressData.description};
-    this.httpDataService.createItem(newProgress).subscribe((response: any) => {
+
+  addNutricionist(): void {
+    const newNutricionist = {userName: this.nutricionistData.userName, password: this.nutricionistData.password,
+      name: this.nutricionistData.name, lastName: this.nutricionistData.lastName, university: this.nutricionistData.university};
+
+    this.httpDataService.createItem(newNutricionist).subscribe((response: any) => {
       this.dataSource.data.push({...response});
       this.dataSource.data = this.dataSource.data.map(o => o);
     });
   }
-  updateProgress(): void {
-    this.httpDataService.updateItem(this.progressData.id, this.progressData)
+  updateNutricionist(): void {
+    this.httpDataService.updateItem(this.nutricionistData.id, this.nutricionistData)
       .subscribe((response: any) => {
-        this.dataSource.data = this.dataSource.data.map((o: Progress) => {
+        this.dataSource.data = this.dataSource.data.map((o: Nutricionist) => {
           if (o.id === response.id) {
             o = response;
           }
@@ -86,25 +90,25 @@ export class ProgressComponent implements OnInit, AfterViewInit {
       });
   }
   onSubmit(): void {
-    if (this.progressForm.form.valid) {
+    if (this.nutricionistForm.form.valid) {
       if (this.isEditMode) {
-        this.updateProgress();
+        this.updateNutricionist();
       } else {
-        this.addProgress();
+        this.addNutricionist();
       }
     } else {
       console.log('Invalid Data');
     }
   }
-  navigateToAddProgress(): void {
-    this.router.navigate(['/progress/new']).then(() => null);
+  navigateToAddNutricionist(): void {
+    this.router.navigate(['/nutricionists/new']).then(() => null);
   }
-  navigateToEditProgress(progressId): void {
-    this.router.navigate([`/progress/${progressId}`]).then(() => null);
+  navigateToEditNutricionist(nutricionistId): void {
+    this.router.navigate([`/nutricionists/${nutricionistId}`]).then(() => null);
   }
   refresh(): void {
     console.log('about to reload');
-    this.getAllProgress();
+    this.getAllNutricionists();
   }
-
 }
+
