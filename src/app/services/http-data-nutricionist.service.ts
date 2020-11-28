@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {Progress} from '../models/progress';
+import {Nutricionist} from '../models/nutricionist';
 import {catchError, retry} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpDataProgressService {
-  // Progress Endpoint
-  basePath = 'http://localhost:8080/api/advices/1/progress/';
+export class HttpDataNutricionistService {
+// Nutricionists Endpoint
+  basePath = 'http://localhost:8080/api/nutricionists';
   constructor(private http: HttpClient) { }
   // Http Default Options
   httpOptions = {
@@ -28,29 +28,29 @@ export class HttpDataProgressService {
     return throwError('Something happened with request, please try again later.');
   }
 
-  // Create Progress
-  createItem(item): Observable<Progress> {
-    return this.http.post<Progress>(this.basePath, JSON.stringify(item), this.httpOptions)
+  // Create Nutricionist
+  createItem(item): Observable<Nutricionist> {
+    return this.http.post<Nutricionist>(this.basePath, JSON.stringify(item), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Get Progress by Id
-  getItem(id): Observable<Progress> {
-    return this.http.get<Progress>(`${this.basePath}/${id}`, this.httpOptions )
+  // Get Nutricionist by Id
+  getItem(id): Observable<Nutricionist> {
+    return this.http.get<Nutricionist>(`${this.basePath}/${id}`, this.httpOptions )
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Get Progress Data
-  getList(): Observable<Progress>{
-    return this.http.get<Progress>(this.basePath)
+  // Get Nutricionist Data
+  getList(): Observable<Nutricionist>{
+    return this.http.get<Nutricionist>(this.basePath)
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Update Progress
-  updateItem(id, item): Observable<Progress>{
-    return this.http.put<Progress>(`${this.basePath}/${id}`, JSON.stringify(item), this.httpOptions)
+  // Update Nutricionist
+  updateItem(id, item): Observable<Nutricionist>{
+    return this.http.put<Nutricionist>(`${this.basePath}/${id}`, JSON.stringify(item), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
-  // Delete Progress
+  // Delete Nutricionist
   deleteItem(id): Observable<any> {
-    return this.http.delete<Progress>(`${this.basePath}/${id}`, this.httpOptions)
+    return this.http.delete<Nutricionist>(`${this.basePath}/${id}`, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 }

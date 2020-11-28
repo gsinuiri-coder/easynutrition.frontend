@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ProgressComponent } from './pages/progress/progress.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,19 +18,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { HomeComponent } from './pages/home/home.component';
 import { AboutComponent } from './pages/about/about.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { ProfileComponent } from './pages/profile/profile.component';
 import { DietsComponent } from './pages/diets/diets.component';
+import { NutricionistsComponent } from './pages/nutricionists/nutricionists.component';
+import { NutricionistComponent } from './pages/nutricionist/nutricionist.component';
+import { CustomersComponent } from './pages/customers/customers.component';
+import { CustomerComponent } from './pages/customer/customer.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProgressComponent,
     HomeComponent,
     AboutComponent,
     PageNotFoundComponent,
-    ProfileComponent,
-    DietsComponent
+    DietsComponent,
+    NutricionistsComponent,
+    NutricionistComponent,
+    CustomersComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
